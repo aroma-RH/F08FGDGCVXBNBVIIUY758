@@ -309,7 +309,7 @@ function loadData() {
             data.forEach(function(row, index) {
                 
              
-                if (row[1] === "Finca 8") {
+                if (row[1] === "FINCA 8") {
                     let tr = document.createElement("tr");
                     
                   
@@ -404,44 +404,21 @@ function deleteRow(index) {
             loadData(); // 
         });
 }
-
-
-  function exportTableToExcel() {
+function exportTableToExcel() {
     const table = document.getElementById('dataTable');
     
-    // الحصول على التاريخ الحالي
+   
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0'); 
     const yyyy = today.getFullYear();
     const dateStr = `${dd}-${mm}-${yyyy}`; 
     
-    // اسم الملف
+    
     const filename = `Effectif_${dateStr}.xlsx`;
     
-    // تحويل الجدول إلى ورقة عمل
-    const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
-    const worksheet = workbook.Sheets["Sheet1"];
     
-    // تعديل تنسيق العمود الثالث (تاريخ)
-    const range = XLSX.utils.decode_range(worksheet['!ref']);
-    for (let row = range.s.r + 1; row <= range.e.r; ++row) {
-        const cellAddress = XLSX.utils.encode_cell({ r: row, c: 2 }); // العمود الثالث
-        const cell = worksheet[cellAddress];
-        
-        if (cell && cell.v) {
-            // تحويل النص إلى تاريخ
-            const [day, month, year] = cell.v.split('/').map(Number);
-            const date = new Date(year, month - 1, day);
-
-            // تحديث الخلية
-            cell.v = date;
-            cell.t = 'd'; // تحديد النوع كتاريخ
-            cell.z = 'dd/mm/yyyy'; // تحديد التنسيق
-        }
-    }
-
-    // كتابة الملف
+    const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
     XLSX.writeFile(workbook, filename);
 }
 
